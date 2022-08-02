@@ -2,7 +2,6 @@ from django.test import TestCase
 
 from recipe import models
 
-
 class ModelTests(TestCase):
 
     def test_create_recipe(self):
