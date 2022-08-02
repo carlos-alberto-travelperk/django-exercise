@@ -9,3 +9,10 @@ class Recipe(models.Model):
     def __str__(self):
         return "Name: " + self.name + \
             ". Description: " + self.description
+
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "Name: " + self.name

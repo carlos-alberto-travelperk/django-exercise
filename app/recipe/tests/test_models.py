@@ -11,3 +11,10 @@ class ModelTests(TestCase):
         )
 
         self.assertEqual("Name: pizza. Description: desc_sample", str(recipe))
+
+    def test_create_ingredient(self):
+        ingredient = models.Ingredient.objects.create(
+            name="Tomate"
+        )
+
+        self.assertEqual("Name: Tomate", str(ingredient))

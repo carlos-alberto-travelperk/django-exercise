@@ -39,3 +39,15 @@ class RecipeAPITests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
+
+    # def test_create_recipe_with_an_ingredient(self):
+    #     ingredients = {"ingredients": [{"name": "dough"}, {"name": "cheese"}, {"name": "tomato"}]}
+    #     create_recipe(**ingredients)
+
+    #     res = self.client.get(RECIPES_URL)
+
+    #     recipes = Recipe.objects.all().order_by("-id")
+    #     serializer = RecipeSerializer(recipes, many=True)
+
+    #     self.assertEqual(res.status_code, status.HTTP_200_OK)
+    #     self.assertEqual(res.data, serializer.data)
