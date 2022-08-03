@@ -11,6 +11,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.order_by("-id")
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        for ingredient in instance.ingredients.all():
+                ing = Ingredient.objects.filter(id=ingredient.id)
+                ing.delete()
+
+        return super().destroy(request, *args, **kwargs)
+
 
 class IngredienteViewSet(viewsets.GenericViewSet):
     serializer_class = serializers.IngredientSerializer

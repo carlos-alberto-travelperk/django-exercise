@@ -73,3 +73,19 @@ class RecipeAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn(ingredient2, recipe.ingredients.all())
         self.assertNotIn(ingredient1, recipe.ingredients.all())
+
+    def test_the_ingredients_are_deleted_when_recipe_is_deleted(self):
+        ingredient = Ingredient.objects.create(name='Pepper')
+        recipe = create_recipe()
+        recipe.ingredients.add(ingredient)
+
+        all_ingredients = Ingredient.objects.all()
+        self.assertEqual(all_ingredients.count(), 1)
+
+        url = get_recipies_url(recipe.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+        deleted_ingredient = Ingredient.objects.filter(id=ingredient.id)
+        self.assertFalse(deleted_ingredient.exists())
