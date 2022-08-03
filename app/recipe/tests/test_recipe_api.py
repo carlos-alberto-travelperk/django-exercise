@@ -3,6 +3,7 @@ from django.urls import reverse
 
 from rest_framework import status
 from rest_framework.test import APIClient
+from urllib.parse import urlencode
 
 from recipe.models import Recipe, Ingredient
 
@@ -13,6 +14,10 @@ def get_recipies_url(recipe_id=None):
     if recipe_id:
         return reverse('recipe:recipe-detail', args=[recipe_id])
     return reverse('recipe:recipe-list')
+
+
+def url_with_querystring(**kwargs):
+    return get_recipies_url() + '?' + urlencode(kwargs)
 
 
 def create_recipe(**params):
@@ -89,3 +94,17 @@ class RecipeAPITests(TestCase):
 
         deleted_ingredient = Ingredient.objects.filter(id=ingredient.id)
         self.assertFalse(deleted_ingredient.exists())
+
+    def test_filter_by_recipe_name(self):
+        create_recipe(name="Pizza")
+        create_recipe(name="Curry")
+
+        url = url_with_querystring(name='Pi')
+
+        res = self.client.get(url)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        expected_recipe = Recipe.objects.filter(name="Pizza").order_by("-id")
+        expected = RecipeSerializer(expected_recipe, many=True)
+        self.assertEqual(expected.data, res.data)
