@@ -107,4 +107,6 @@ class RecipeAPITests(TestCase):
 
         expected_recipe = Recipe.objects.filter(name="Pizza").order_by("-id")
         expected = RecipeSerializer(expected_recipe, many=True)
-        self.assertEqual(expected.data, res.data)
+
+        self.assertEqual(len(expected.data), 1)
+        self.assertEqual(expected.data[0]["name"], res.data[0]["name"])
